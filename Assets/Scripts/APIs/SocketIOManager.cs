@@ -44,8 +44,8 @@ public class SocketIOManager : MonoBehaviour
     [SerializeField]
     private string testToken;
 
-    protected string gameID = "SL-GOW";
-   // protected string gameID = "";
+   // protected string gameID = "SL-GOW";
+     protected string gameID = "";
     internal bool isLoaded = false;
 
     internal bool SetInit = false;
@@ -58,13 +58,6 @@ public class SocketIOManager : MonoBehaviour
         //Debug.unityLogger.logEnabled = false;
         isLoaded = false;
         SetInit = false;
-#if UNITY_WEBGL && !UNITY_EDITOR
-        Application.ExternalEval(@"
-          if(window.ReactNativeWebView){
-            window.ReactNativeWebView.postMessage('This is the new version of the game 1.2');
-          }
-        ");
-#endif
     }
 
     private void Start()
@@ -98,18 +91,8 @@ public class SocketIOManager : MonoBehaviour
         options.ConnectWith = Best.SocketIO.Transports.TransportTypes.WebSocket; //BackendChanges
 
 #if UNITY_WEBGL && !UNITY_EDITOR
-    string url = Application.absoluteURL;
-    Debug.Log("Unity URL : " + url);
-    ExtractUrlAndToken(url);
-
-    Func<SocketManager, Socket, object> webAuthFunction = (manager, socket) =>
-    {
-      return new
-      {
-        token = testToken,
-      };
-    };
-    options.Auth = webAuthFunction;
+            JSManager.SendCustomMessage("authToken");
+            StartCoroutine(WaitForAuthToken(options));
 #else
         Func<SocketManager, Socket, object> authFunction = (manager, socket) =>
         {
@@ -119,9 +102,34 @@ public class SocketIOManager : MonoBehaviour
             };
         };
         options.Auth = authFunction;
-#endif
         // Proceed with connecting to the server
         SetupSocketManager(options);
+#endif
+        //     #if UNITY_WEBGL && !UNITY_EDITOR
+        //     string url = Application.absoluteURL;
+        //     Debug.Log("Unity URL : " + url);
+        //     ExtractUrlAndToken(url);
+
+        //     Func<SocketManager, Socket, object> webAuthFunction = (manager, socket) =>
+        //     {
+        //     return new
+        //     {
+        //         token = testToken,
+        //     };
+        //     };
+        //     options.Auth = webAuthFunction;
+        //     #else
+        //     Func<SocketManager, Socket, object> authFunction = (manager, socket) =>
+        //     {
+        //     return new
+        //     {
+        //         token = testToken,
+        //     };
+        //     };
+        //     options.Auth = authFunction;
+        //     #endif
+        //     // Proceed with connecting to the server
+        //     SetupSocketManager(options);
     }
 
 
@@ -145,8 +153,7 @@ public class SocketIOManager : MonoBehaviour
         {
             return new
             {
-                token = myAuth,
-                gameId = gameID
+                token = myAuth
             };
         };
         options.Auth = authFunction;
@@ -221,14 +228,6 @@ public class SocketIOManager : MonoBehaviour
     private void OnError(string response)
     {
         Debug.Log($"on error");
-        Debug.LogError("Error: " + response);
-#if UNITY_WEBGL && !UNITY_EDITOR
-        Application.ExternalEval(@"
-          if(window.ReactNativeWebView){
-            window.ReactNativeWebView.postMessage('Game Socket OnError');
-          }
-        ");
-#endif
     }
     void OnResult(string data)
     {
@@ -239,13 +238,6 @@ public class SocketIOManager : MonoBehaviour
     {
         Debug.Log("Received some_event with data: " + data);
         ParseResponse(data);
-#if UNITY_WEBGL && !UNITY_EDITOR
-        Application.ExternalEval(@"
-          if(window.ReactNativeWebView){
-            window.ReactNativeWebView.postMessage('Game Socket OnListenEvent');
-          }
-        ");
-#endif
     }
 
     private void OnSocketState(bool state)
@@ -262,37 +254,16 @@ public class SocketIOManager : MonoBehaviour
     private void OnSocketError(string data)
     {
         Debug.Log("Received error with data: " + data);
-#if UNITY_WEBGL && !UNITY_EDITOR
-        Application.ExternalEval(@"
-          if(window.ReactNativeWebView){
-            window.ReactNativeWebView.postMessage('Game Socket OnSocketError');
-          }
-        ");
-#endif
     }
     private void OnSocketAlert(string data)
     {
         Debug.Log("Received alert with data: " + data);
-#if UNITY_WEBGL && !UNITY_EDITOR
-        Application.ExternalEval(@"
-          if(window.ReactNativeWebView){
-            window.ReactNativeWebView.postMessage('Game Socket Alert');
-          }
-        ");
-#endif
     }
 
     private void OnSocketOtherDevice(string data)
     {
         Debug.Log("Received Device Error with data: " + data);
         uiManager.ADfunction();
-#if UNITY_WEBGL && !UNITY_EDITOR
-        Application.ExternalEval(@"
-          if(window.ReactNativeWebView){
-            window.ReactNativeWebView.postMessage('Game Socket OnSocketOtherDevice');
-          }
-        ");
-#endif
     }
     public void ExtractUrlAndToken(string fullUrl)
     {
@@ -361,7 +332,18 @@ public class SocketIOManager : MonoBehaviour
 
     public void CloseSocket()
     {
-        SendDataWithNamespace("EXIT");
+        //        if (gameSocket != null) //BackendChanges
+        //                     {
+        //             gameSocket.Disconnect();
+        //                         Debug.Log("Dispose my Socket");
+        //                         this.manager.Close();
+        //                     }
+        //                     //   Application.ExternalCall("window.parent.postMessage", "onExit", "*");
+
+        SendDataWithNamespace("game:exit");
+#if UNITY_WEBGL && !UNITY_EDITOR
+    JSManager.SendCustomMessage("OnExit");
+#endif
     }
 
     private void ParseResponse(string jsonObject)
@@ -410,22 +392,13 @@ public class SocketIOManager : MonoBehaviour
                     }
                     //   Application.ExternalCall("window.parent.postMessage", "onExit", "*");
 #if UNITY_WEBGL && !UNITY_EDITOR
-                        JSManager.SendCustomMessage("onExit");
+                        JSManager.SendCustomMessage("OnExit");
 #endif
                     break;
                 }
         }
     }
 
-
-
-
-    internal void ReactNativeCallOnFailedToConnect() //BackendChanges
-    {
-#if UNITY_WEBGL && !UNITY_EDITOR
-    JSManager.SendCustomMessage("onExit");
-#endif
-    }
 
     private void RefreshUI()
     {
@@ -582,7 +555,7 @@ public class GameData
     // New updated 
     public List<List<int>> lines { get; set; }
     public List<double> bets { get; set; }
-   // public Features features { get; set; }
+    // public Features features { get; set; }
 
 
 }

@@ -154,8 +154,15 @@ public class SlotBehaviour : MonoBehaviour
     [SerializeField] private List<GameObject> GoldWildEffect;
     [SerializeField] private GameObject FreeGameBottomPanel;
 
+    [SerializeField] private Sprite[] BgTheme;
+    [SerializeField] private Image BgImage;
 
 
+
+    void Awake()
+    {
+        BgImage.sprite = BgTheme[0];
+    }
     private void Start()
     {
         IsAutoSpin = false;
@@ -264,6 +271,8 @@ public class SlotBehaviour : MonoBehaviour
     {
         if (!IsFreeSpin)
         {
+        BgImage.sprite = BgTheme[1];
+
             if (FSBoard_Object) FSBoard_Object.SetActive(true);
             if (FreeGameBottomPanel) FreeGameBottomPanel.SetActive(true);
 
@@ -293,6 +302,8 @@ public class SlotBehaviour : MonoBehaviour
         }
         if (FSBoard_Object) FSBoard_Object.SetActive(false);
         if (FreeGameBottomPanel) FreeGameBottomPanel.SetActive(false);
+        BgImage.sprite = BgTheme[0];
+
         if (WasAutoSpinOn)
         {
             AutoSpin();
@@ -575,11 +586,7 @@ public class SlotBehaviour : MonoBehaviour
         }
 
 
-        if (IsTurboOn || IsFreeSpin)
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
-        else
+       if(!(IsTurboOn|| IsFreeSpin||IsAutoSpin))
         {
             for (int i = 0; i < 15; i++)
             {
@@ -643,7 +650,11 @@ public class SlotBehaviour : MonoBehaviour
                 {
                     winLine.Add(win.line);
                 }
-                CheckPayoutLineBackend(winLine);
+                CheckPopups = true;
+                // CheckPayoutLineBackend(winLine);
+                StartCoroutine(CheckPayoutLineBackend(winLine));
+                yield return new WaitUntil(() => !CheckPopups);
+
             }
         }
         CheckPopups = true;
@@ -865,8 +876,11 @@ public class SlotBehaviour : MonoBehaviour
     // }
 
 
-    private void CheckPayoutLineBackend(List<int> LineId)
+    private IEnumerator CheckPayoutLineBackend(List<int> LineId)
     {
+        float delay = 0f;
+        if (IsFreeSpin || IsAutoSpin || IsTurboOn) delay = 0.4f;
+        else delay = 1.2f;
         if (LineId.Count > 0)
         {
             foreach (SlotImage slotImage in ReelsHideGameObject1)
@@ -876,18 +890,20 @@ public class SlotBehaviour : MonoBehaviour
                     img.gameObject.SetActive(true);
                 }
             }
-            List<KeyValuePair<int, int>> coords = new();
 
+            List<KeyValuePair<int, int>> Totalcoords = new();
             for (int i = 0; i < LineId.Count; i++)
             {
+                List<KeyValuePair<int, int>> coords = new();
+
                 Debug.Log("line come " + LineId[i]);
                 PayoutLines[LineId[i]].SetActive(true);
                 for (int k = 0; k < SocketManager.resultData.payload.wins[i].positions.Count; k++)
                 {
                     int rowIndex = SocketManager.initialData.lines[LineId[i]][SocketManager.resultData.payload.wins[i].positions[k]];
                     int columnIndex = SocketManager.resultData.payload.wins[i].positions[k];
-                    Debug.Log($" paylines symols of line " + LineId[i] + "  and  column : " + columnIndex + "  abd row " + rowIndex);
                     coords.Add(new KeyValuePair<int, int>(rowIndex, columnIndex));
+                    Totalcoords.Add(new KeyValuePair<int, int>(rowIndex, columnIndex));
                 }
 
                 foreach (var coord in coords)
@@ -899,8 +915,35 @@ public class SlotBehaviour : MonoBehaviour
                     ReelsFrameGameObject1[columnIndex].slotImages[rowIndex].gameObject.SetActive(true);
 
                 }
+                yield return new WaitForSeconds(delay);
+                foreach (var coord in coords)
+                {
+
+                    int rowIndex = coord.Key;
+                    int columnIndex = coord.Value;
+                    Tempimages[columnIndex].slotImages[rowIndex].gameObject.GetComponent<ImageAnimation>().StopAnimation();
+                    ReelsHideGameObject1[columnIndex].slotImages[rowIndex].gameObject.SetActive(true);
+                    ReelsFrameGameObject1[columnIndex].slotImages[rowIndex].gameObject.SetActive(false);
+
+                }
+                PayoutLines[LineId[i]].SetActive(false);
             }
+            for (int i = 0; i < LineId.Count; i++)
+            {
+                PayoutLines[LineId[i]].SetActive(true);
+                foreach (var coord in Totalcoords)
+                {
+                    int rowIndex = coord.Key;
+                    int columnIndex = coord.Value;
+                    StartGameAnimation(Tempimages[columnIndex].slotImages[rowIndex].gameObject);
+                    ReelsHideGameObject1[columnIndex].slotImages[rowIndex].gameObject.SetActive(false);
+                    ReelsFrameGameObject1[columnIndex].slotImages[rowIndex].gameObject.SetActive(true);
+                }
+
+            }
+
             WinningsAnim(true);
+            CheckPopups = false;
         }
         else
         {
@@ -909,6 +952,53 @@ public class SlotBehaviour : MonoBehaviour
         }
         CheckSpinAudio = false;
     }
+
+
+
+    // private void CheckPayoutLineBackend(List<int> LineId)
+    // {
+    //     if (LineId.Count > 0)
+    //     {
+    //         foreach (SlotImage slotImage in ReelsHideGameObject1)
+    //         {
+    //             foreach (Image img in slotImage.slotImages)
+    //             {
+    //                 img.gameObject.SetActive(true);
+    //             }
+    //         }
+    //         List<KeyValuePair<int, int>> coords = new();
+
+    //         for (int i = 0; i < LineId.Count; i++)
+    //         {
+    //             Debug.Log("line come " + LineId[i]);
+    //             PayoutLines[LineId[i]].SetActive(true);
+    //             for (int k = 0; k < SocketManager.resultData.payload.wins[i].positions.Count; k++)
+    //             {
+    //                 int rowIndex = SocketManager.initialData.lines[LineId[i]][SocketManager.resultData.payload.wins[i].positions[k]];
+    //                 int columnIndex = SocketManager.resultData.payload.wins[i].positions[k];
+    //                 Debug.Log($" paylines symols of line " + LineId[i] + "  and  column : " + columnIndex + "  abd row " + rowIndex);
+    //                 coords.Add(new KeyValuePair<int, int>(rowIndex, columnIndex));
+    //             }
+
+    //             foreach (var coord in coords)
+    //             {
+    //                 int rowIndex = coord.Key;
+    //                 int columnIndex = coord.Value;
+    //                 StartGameAnimation(Tempimages[columnIndex].slotImages[rowIndex].gameObject);
+    //                 ReelsHideGameObject1[columnIndex].slotImages[rowIndex].gameObject.SetActive(false);
+    //                 ReelsFrameGameObject1[columnIndex].slotImages[rowIndex].gameObject.SetActive(true);
+
+    //             }
+    //         }
+    //         WinningsAnim(true);
+    //     }
+    //     else
+    //     {
+    //         //if (audioController) audioController.PlayWLAudio("lose");
+    //         if (audioController) audioController.StopWLAaudio();
+    //     }
+    //     CheckSpinAudio = false;
+    // }
 
 
 
@@ -1001,7 +1091,7 @@ public class SlotBehaviour : MonoBehaviour
         {
             Debug.Log("playing stop sound");
             audioController.PlayWLAudio("spinStop");
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
         }
         else
         {

@@ -118,6 +118,7 @@ void Start()
 			rendererDelegate.sprite = textureArray[0];
 			CancelInvoke("AnimationProcess");
 			currentAnimationState = ImageState.NONE;
+			Debug.Log($" Stop animation called " +gameObject.name);
 		}
 	}
 

@@ -13467,7 +13467,7 @@ MonoBehaviour:
   bonusdata: []
   _jsManager: {fileID: 500036493}
   JSManager: {fileID: 1029290966}
-  testToken: e149574c5ac147e1bc71c89b64a62f0b
+  testToken: 46d2468c4aea458bbf69f6eba34e4dec
 --- !u!114 &500036493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27131,7 +27131,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &997420248
 RectTransform:
   m_ObjectHideFlags: 0
@@ -54175,6 +54175,10 @@ MonoBehaviour:
   - {fileID: 774064952}
   - {fileID: 752115608}
   FreeGameBottomPanel: {fileID: 173412121}
+  BgTheme:
+  - {fileID: 21300000, guid: b421c8c14692c485aa960e4eeb6f000e, type: 3}
+  - {fileID: 21300000, guid: 7ae667c76cadf4253960c48ecce20161, type: 3}
+  BgImage: {fileID: 36935029}
 --- !u!1 &2048235377
 GameObject:
   m_ObjectHideFlags: 0

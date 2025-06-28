@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "God Of Wealth.sln"
+    "dotnet.defaultSolution": "SlotSpecial-GodOfWealth-PK.sln"
 }

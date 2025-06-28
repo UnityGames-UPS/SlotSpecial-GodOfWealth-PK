@@ -196,7 +196,7 @@ public class UIManager : MonoBehaviour
         });
 
         if (CloseDisconnect_Button) CloseDisconnect_Button.onClick.RemoveAllListeners();
-        if (CloseDisconnect_Button) CloseDisconnect_Button.onClick.AddListener(delegate { CallOnExitFunction(); socketManager.ReactNativeCallOnFailedToConnect(); }); //BackendChanges
+        if (CloseDisconnect_Button) CloseDisconnect_Button.onClick.AddListener(delegate { CallOnExitFunction(); }); //BackendChanges
 
         if (audioController) audioController.ToggleMute(false);
 
