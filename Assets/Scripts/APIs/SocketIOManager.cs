@@ -195,7 +195,7 @@ public class SocketIOManager : MonoBehaviour
         gameSocket.On<string>(SocketIOEventTypes.Disconnect, OnDisconnected);
         gameSocket.On<string>(SocketIOEventTypes.Error, OnError);
         gameSocket.On<string>("game:init", OnListenEvent);
-        gameSocket.On<string>("spin:result", OnResult);
+        gameSocket.On<string>("result", OnResult);
         gameSocket.On<bool>("socketState", OnSocketState);
         gameSocket.On<string>("internalError", OnSocketError);
         gameSocket.On<string>("alert", OnSocketAlert);
@@ -422,14 +422,16 @@ public class SocketIOManager : MonoBehaviour
 #endif
     }
 
-    internal void AccumulateResult(double currBet)
+    internal void AccumulateResult(int currBet)
     {
         isResultdone = false;
         MessageData message = new MessageData();
-        message.currentBet = slotManager.BetCounter;
-        // Serialize message data to JSON
-        string json = JsonUtility.ToJson(message);
-        SendDataWithNamespace("spin:request", json);
+    message.type = "SPIN";
+    Debug.Log($"current bet is " + currBet);
+    message.payload = new Data();
+    message.payload.betIndex = currBet;
+    string json = JsonUtility.ToJson(message);
+    SendDataWithNamespace("request", json);
     }
 
     private List<string> RemoveQuotes(List<string> stringList)
@@ -516,7 +518,20 @@ public class AuthData
 [Serializable]
 public class MessageData
 {
-    public int currentBet;
+  // public int option;
+  // public List<int> index;
+  public string type;
+  public Data payload;
+
+}
+[Serializable]
+public class Data
+{
+  public int betIndex;
+//   public string Event;
+//   public List<int> index;
+//   public int option;
+
 }
 
 [Serializable]

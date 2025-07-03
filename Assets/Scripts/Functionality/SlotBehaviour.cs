@@ -413,7 +413,7 @@ public class SlotBehaviour : MonoBehaviour
                 {
                     animScript.textureArray.Add(FirecCrackeres_Sprite[i]);
                 }
-                animScript.AnimationSpeed = 15f;
+                animScript.AnimationSpeed = 46f;
                 break;
 
             case 2:
@@ -421,7 +421,7 @@ public class SlotBehaviour : MonoBehaviour
                 {
                     animScript.textureArray.Add(Looket_Sprite[i]);
                 }
-                animScript.AnimationSpeed = 11f;
+                animScript.AnimationSpeed = 45f;
                 break;
 
             case 3:
@@ -429,7 +429,7 @@ public class SlotBehaviour : MonoBehaviour
                 {
                     animScript.textureArray.Add(Drum_Sprite[i]);
                 }
-                animScript.AnimationSpeed = 15f;
+                animScript.AnimationSpeed = 45f;
                 break;
 
             case 4:
@@ -437,7 +437,7 @@ public class SlotBehaviour : MonoBehaviour
                 {
                     animScript.textureArray.Add(GirlAsset_Sprite[i]);
                 }
-                animScript.AnimationSpeed = 9f;
+                animScript.AnimationSpeed = 11f;
                 break;
 
             case 5:
@@ -469,7 +469,7 @@ public class SlotBehaviour : MonoBehaviour
                 {
                     animScript.textureArray.Add(SuperWild_Sprite[i]);
                 }
-                animScript.AnimationSpeed = 15f;
+                animScript.AnimationSpeed = 30f;
                 break;
 
             case 9:
@@ -477,7 +477,7 @@ public class SlotBehaviour : MonoBehaviour
                 {
                     animScript.textureArray.Add(Wild_Sprite[i]);
                 }
-                animScript.AnimationSpeed = 7f;
+                animScript.AnimationSpeed = 33f;
                 break;
 
             case 10:
@@ -485,7 +485,7 @@ public class SlotBehaviour : MonoBehaviour
                 {
                     animScript.textureArray.Add(Scatter_Sprite[i]);
                 }
-                animScript.AnimationSpeed = 15f;
+                animScript.AnimationSpeed = 35f;
                 break;
         }
     }
@@ -761,13 +761,13 @@ public class SlotBehaviour : MonoBehaviour
                 GoldWildEffect[index].SetActive(true);
                 GoldColumnIndex.Add(index);
             }
-            yield return new WaitForSeconds(2.5f);
+            yield return new WaitForSeconds(1.8f);
             for (int i = 0; i < GoldColumnCount; i++)
             {
                 int index = Convert.ToInt32(SocketManager.resultData.features.goldCol.goldCols[i]); // if goldWildCol is List<object>
                 GoldCoinSpawningParticals[index].SetActive(true);
             }
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(3f);
             foreach (GameObject go in GoldCoinSpawningParticals)
             {
                 go.SetActive(false);
@@ -780,7 +780,7 @@ public class SlotBehaviour : MonoBehaviour
             foreach (int a in GoldColumnIndex)
             {
                 SetGoldWildColumn(a);
-                yield return new WaitForSeconds(0.1f);
+               // yield return new WaitForSeconds(0.1f);
             }
             yield return new WaitForSeconds(1.2f);
             GoldWildCompleted = true;
@@ -879,7 +879,7 @@ public class SlotBehaviour : MonoBehaviour
     private IEnumerator CheckPayoutLineBackend(List<int> LineId)
     {
         float delay = 0f;
-        if (IsFreeSpin || IsAutoSpin || IsTurboOn) delay = 0.4f;
+        if (IsFreeSpin  || IsTurboOn) delay = 0.5f;
         else delay = 1.2f;
         if (LineId.Count > 0)
         {
