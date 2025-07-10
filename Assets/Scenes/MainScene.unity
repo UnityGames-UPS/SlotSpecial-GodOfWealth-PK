@@ -13473,7 +13473,7 @@ MonoBehaviour:
   bonusdata: []
   _jsManager: {fileID: 500036493}
   JSManager: {fileID: 1029290966}
-  testToken: d0136a89e47844a8bbf348f403ec3126
+  testToken: 2387620049d64467a7be7e1ee114b87e
 --- !u!114 &500036493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54300,19 +54300,19 @@ MonoBehaviour:
   - {fileID: 0}
   Slot_Transform:
   - {fileID: 1640099048}
-  - {fileID: 2039781720}
-  - {fileID: 1482787558}
-  - {fileID: 1430026609}
-  - {fileID: 193529277}
   - {fileID: 105929919}
-  - {fileID: 701192350}
-  - {fileID: 1426032563}
-  - {fileID: 1338612629}
-  - {fileID: 1188297180}
   - {fileID: 1626148953}
+  - {fileID: 2039781720}
+  - {fileID: 701192350}
   - {fileID: 245252232}
+  - {fileID: 1482787558}
+  - {fileID: 1426032563}
   - {fileID: 1475804580}
+  - {fileID: 1430026609}
+  - {fileID: 1338612629}
   - {fileID: 969058054}
+  - {fileID: 193529277}
+  - {fileID: 1188297180}
   - {fileID: 787891416}
   StaticLine_Objects: []
   StaticLine_Texts:
@@ -57686,13 +57686,14 @@ MonoBehaviour:
   audioPlayer_button: {fileID: 1742219840284188182}
   audioSpin_button: {fileID: 3653419156959999269}
   clips:
-  - {fileID: 8300000, guid: 797736b99c9f443cfbe8df97ba165a08, type: 3}
+  - {fileID: 8300000, guid: c8f386cd68ba544959d732690cf21c41, type: 3}
   - {fileID: 8300000, guid: cd4727b4a54c54682bd1c010320b41ef, type: 3}
   - {fileID: 8300000, guid: 692fef4dceb8b410bbe30f4b667345dc, type: 3}
   - {fileID: 8300000, guid: 567d42d78a31a446a86f8a75b656d45a, type: 3}
   - {fileID: 8300000, guid: cd4727b4a54c54682bd1c010320b41ef, type: 3}
   - {fileID: 8300000, guid: 567d42d78a31a446a86f8a75b656d45a, type: 3}
-  - {fileID: 8300000, guid: eff5c8ad9b6ff4bc9bdcc1cc88c87227, type: 3}
+  - {fileID: 8300000, guid: dc9f56fb7b70249309723a6a6d0756f6, type: 3}
+  - {fileID: 8300000, guid: 28e89dc061f9d478f9bab87c2bd5bd99, type: 3}
   Bonusclips:
   - {fileID: 8300000, guid: cd4727b4a54c54682bd1c010320b41ef, type: 3}
   - {fileID: 8300000, guid: 692fef4dceb8b410bbe30f4b667345dc, type: 3}
@@ -58016,7 +58017,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: f8d433ac12d0c4da3bba299e7b3af496, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 3b6242077d2c14381ab5101bf52b2a5d, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.4
   m_Pitch: 1

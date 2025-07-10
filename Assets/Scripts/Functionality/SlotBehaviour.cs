@@ -186,7 +186,7 @@ public class SlotBehaviour : MonoBehaviour
         if (Turbo_Button) Turbo_Button.onClick.AddListener(TurboToggle);
 
         if (AutoSpinStop_Button) AutoSpinStop_Button.onClick.RemoveAllListeners();
-        if (AutoSpinStop_Button) AutoSpinStop_Button.onClick.AddListener(StopAutoSpin);
+        if (AutoSpinStop_Button) AutoSpinStop_Button.onClick.AddListener(()=>{StopAutoSpin(); WasAutoSpinOn = false; });
 
         if (FSBoard_Object) FSBoard_Object.SetActive(false);
         if (FreeGameBottomPanel) FreeGameBottomPanel.SetActive(false);

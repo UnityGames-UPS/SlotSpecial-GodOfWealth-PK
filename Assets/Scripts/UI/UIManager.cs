@@ -274,6 +274,8 @@ public class UIManager : MonoBehaviour
         Debug.Log("Total Spins: " + spins);
         if (FreeSpinMainPopup_Object) FreeSpinMainPopup_Object.SetActive(true);
         if (FreeSpinPopup_Object) FreeSpinPopup_Object.SetActive(true);
+        if (audioController) audioController.PlayWLAudio("freeSpin");
+
         // if (Free_Text) Free_Text.text = ExtraSpins.ToString() + " Free spins awarded.";
         DOVirtual.DelayedCall(2f, () =>
         {
@@ -371,7 +373,6 @@ public class UIManager : MonoBehaviour
                 SymbolsText[i].Text3x.text = "";
             }
 
-            Debug.Log("Symbol info: " + symbol.name);
         }
 
 
@@ -403,14 +404,9 @@ public class UIManager : MonoBehaviour
     }
     private void SetMultiplierinfo()
     {
-        Debug.Log("Set value : 1 count: " + socketManager.initialRootData.features.allKindMults.Count);
-        Debug.Log("InfoMultiplierPageTexts Count: " + InfoMultiplierPageTexts.Count);
-
         int count = Mathf.Min(socketManager.initialRootData.features.allKindMults.Count, InfoMultiplierPageTexts.Count);
-
         for (int i = 0; i < count; i++)
         {
-            Debug.Log("Set value : 2  " + socketManager.initialRootData.features.allKindMults[i]);
             InfoMultiplierPageTexts[i].text = socketManager.initialRootData.features.allKindMults[i].ToString();
         }
     }
