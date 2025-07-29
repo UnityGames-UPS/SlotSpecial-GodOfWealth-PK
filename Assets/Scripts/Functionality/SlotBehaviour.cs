@@ -538,6 +538,11 @@ public class SlotBehaviour : MonoBehaviour
             ToggleButtonGrp(true);
             yield break;
         }
+         if (PaylineRoutine != null)
+        {
+            StopCoroutine(PaylineRoutine);
+            PaylineRoutine = null;
+        }
         if (audioController) audioController.PlayWLAudio("spin");
         CheckSpinAudio = true;
 
@@ -655,7 +660,10 @@ public class SlotBehaviour : MonoBehaviour
 
                 PaylineRoutine = StartCoroutine(CheckPayoutLineBackend(winLine));
                 //  yield return new WaitUntil(() => !CheckPopups);
-
+             if(IsFreeSpin || IsAutoSpin)
+                {
+                    yield return new WaitForSeconds(0.7f);
+                }
             }
         }
         CheckPopups = true;
@@ -699,11 +707,6 @@ public class SlotBehaviour : MonoBehaviour
         }
         // StopCoroutine(CheckPayoutLineBackend());
         // PaylineRoutine.Kill();
-        if (PaylineRoutine != null)
-        {
-            StopCoroutine(PaylineRoutine);
-            PaylineRoutine = null;
-        }
 
     }
 
@@ -888,6 +891,7 @@ public class SlotBehaviour : MonoBehaviour
 
     private IEnumerator CheckPayoutLineBackend(List<int> LineId)
     {
+        Debug.Log($"Total line come : {LineId.Count}");
         float delay = 0f;
         if (IsFreeSpin || IsTurboOn) delay = 0.5f;
         else delay = 1.2f;
@@ -915,28 +919,31 @@ public class SlotBehaviour : MonoBehaviour
                     coords.Add(new KeyValuePair<int, int>(rowIndex, columnIndex));
                     Totalcoords.Add(new KeyValuePair<int, int>(rowIndex, columnIndex));
                 }
-
-                foreach (var coord in coords)
-                {
-                    int rowIndex = coord.Key;
-                    int columnIndex = coord.Value;
-                    StartGameAnimation(Tempimages[columnIndex].slotImages[rowIndex].gameObject);
-                    ReelsHideGameObject1[columnIndex].slotImages[rowIndex].gameObject.SetActive(false);
-                    ReelsFrameGameObject1[columnIndex].slotImages[rowIndex].gameObject.SetActive(true);
-
-                }
-                yield return new WaitForSeconds(delay);
-                foreach (var coord in coords)
+                if (!(IsFreeSpin || IsAutoSpin))
                 {
 
-                    int rowIndex = coord.Key;
-                    int columnIndex = coord.Value;
-                    Tempimages[columnIndex].slotImages[rowIndex].gameObject.GetComponent<ImageAnimation>().StopAnimation();
-                    ReelsHideGameObject1[columnIndex].slotImages[rowIndex].gameObject.SetActive(true);
-                    ReelsFrameGameObject1[columnIndex].slotImages[rowIndex].gameObject.SetActive(false);
+                    foreach (var coord in coords)
+                    {
+                        int rowIndex = coord.Key;
+                        int columnIndex = coord.Value;
+                        StartGameAnimation(Tempimages[columnIndex].slotImages[rowIndex].gameObject);
+                        ReelsHideGameObject1[columnIndex].slotImages[rowIndex].gameObject.SetActive(false);
+                        ReelsFrameGameObject1[columnIndex].slotImages[rowIndex].gameObject.SetActive(true);
 
+                    }
+                    yield return new WaitForSeconds(delay);
+                    foreach (var coord in coords)
+                    {
+
+                        int rowIndex = coord.Key;
+                        int columnIndex = coord.Value;
+                        Tempimages[columnIndex].slotImages[rowIndex].gameObject.GetComponent<ImageAnimation>().StopAnimation();
+                        ReelsHideGameObject1[columnIndex].slotImages[rowIndex].gameObject.SetActive(true);
+                        ReelsFrameGameObject1[columnIndex].slotImages[rowIndex].gameObject.SetActive(false);
+
+                    }
+                    PayoutLines[LineId[i]].SetActive(false);
                 }
-                PayoutLines[LineId[i]].SetActive(false);
             }
             for (int i = 0; i < LineId.Count; i++)
             {
@@ -1101,7 +1108,7 @@ public class SlotBehaviour : MonoBehaviour
         if (TBetMinus_Button) TBetMinus_Button.interactable = toggle;
         if (TBetPlus_Button) TBetPlus_Button.interactable = toggle;
 
-        //  if (Turbo_Button) Turbo_Button.interactable = toggle;
+          if (Turbo_Button) Turbo_Button.interactable = toggle;
     }
 
     //start the icons animation
