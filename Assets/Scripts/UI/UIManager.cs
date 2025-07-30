@@ -79,6 +79,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject DisconnectPopup_Object;
 
+    [SerializeField] private GameObject ReconnectPopup_Object;
+
     [Header("AnotherDevice Popup")]
     // [SerializeField]
     // private GameObject ADPopup_Object;
@@ -226,7 +228,7 @@ public class UIManager : MonoBehaviour
         OpenPopup(LBPopup_Object);
     }
 
-    internal void DisconnectionPopup(bool isReconnection)
+    internal void DisconnectionPopup()
     {
         if (!isExit)
         {
@@ -337,7 +339,7 @@ public class UIManager : MonoBehaviour
     {
         PopulateSymbolsPayout(symbolsText);
 
-         SetMultiplierinfo();
+        SetMultiplierinfo();
     }
 
     private void PopulateSymbolsPayout(Paylines paylines)
@@ -397,10 +399,10 @@ public class UIManager : MonoBehaviour
                 if (GoldWild_Text) GoldWild_Text.text = "<sprite=0>" + modifiedDescription;
             }
         }
-        
-        if(ScatterFreeSpinstext.Text5x.text!=null) ScatterFreeSpinstext.Text5x.text= socketManager.initialRootData.features.freeSpinCounts[0].ToString()+" FREE SPINS";  // paylines.symbols[i].Multiplier[0][1].ToString() + " FREE SPINS";
-        ScatterFreeSpinstext.Text4x.text = socketManager.initialRootData.features.freeSpinCounts[1].ToString()+" FREE SPINS";
-        ScatterFreeSpinstext.Text3x.text = socketManager.initialRootData.features.freeSpinCounts[2].ToString()+" FREE SPINS";
+
+        if (ScatterFreeSpinstext.Text5x.text != null) ScatterFreeSpinstext.Text5x.text = socketManager.initialRootData.features.freeSpinCounts[0].ToString() + " FREE SPINS";  // paylines.symbols[i].Multiplier[0][1].ToString() + " FREE SPINS";
+        ScatterFreeSpinstext.Text4x.text = socketManager.initialRootData.features.freeSpinCounts[1].ToString() + " FREE SPINS";
+        ScatterFreeSpinstext.Text3x.text = socketManager.initialRootData.features.freeSpinCounts[2].ToString() + " FREE SPINS";
     }
     private void SetMultiplierinfo()
     {
@@ -477,6 +479,18 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    internal void CheckAndClosePopups()
+    {
+        if (ReconnectPopup_Object.activeInHierarchy)
+        {
+            ClosePopup(ReconnectPopup_Object);
+        }
+        if (DisconnectPopup_Object.activeInHierarchy)
+        {
+            ClosePopup(DisconnectPopup_Object);
+        }
+    }
+
     private void ToggleMusic()
     {
         if (audioController) audioController.PlayButtonAudio();
@@ -492,6 +506,11 @@ public class UIManager : MonoBehaviour
             musicImage.sprite = Disable_Sound_sprite;
             audioController.ToggleMute(true, "bg");
         }
+    }
+
+    internal void ReconnectionPopup()
+    {
+        OpenPopup(ReconnectPopup_Object);
     }
 
     private void UrlButtons(string url)

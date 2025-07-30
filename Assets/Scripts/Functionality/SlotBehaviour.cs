@@ -538,7 +538,7 @@ public class SlotBehaviour : MonoBehaviour
             ToggleButtonGrp(true);
             yield break;
         }
-         if (PaylineRoutine != null)
+        if (PaylineRoutine != null)
         {
             StopCoroutine(PaylineRoutine);
             PaylineRoutine = null;
@@ -660,7 +660,7 @@ public class SlotBehaviour : MonoBehaviour
 
                 PaylineRoutine = StartCoroutine(CheckPayoutLineBackend(winLine));
                 //  yield return new WaitUntil(() => !CheckPopups);
-             if(IsFreeSpin || IsAutoSpin)
+                if (IsFreeSpin || IsAutoSpin)
                 {
                     yield return new WaitForSeconds(0.7f);
                 }
@@ -1097,7 +1097,7 @@ public class SlotBehaviour : MonoBehaviour
 
     internal void CallCloseSocket()
     {
-        SocketManager.CloseSocket();
+        StartCoroutine(SocketManager.CloseSocket());
     }
 
 
@@ -1108,7 +1108,7 @@ public class SlotBehaviour : MonoBehaviour
         if (TBetMinus_Button) TBetMinus_Button.interactable = toggle;
         if (TBetPlus_Button) TBetPlus_Button.interactable = toggle;
 
-          if (Turbo_Button) Turbo_Button.interactable = toggle;
+        if (Turbo_Button) Turbo_Button.interactable = toggle;
     }
 
     //start the icons animation
