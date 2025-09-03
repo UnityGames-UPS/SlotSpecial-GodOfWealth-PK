@@ -428,7 +428,7 @@ public class SocketIOManager : MonoBehaviour
     JSManager.SendCustomMessage("OnExit"); //Telling the react platform user wants to quit and go back to homepage
 #endif
     }
-     void CloseGame()
+    void CloseGame()
     {
         Debug.Log("Unity: Closing Game");
         StartCoroutine(CloseSocket());
@@ -755,10 +755,19 @@ public class Features
     public List<int> freeSpinCounts { get; set; }
     public FreeSpin freeSpin { get; set; }
     public GoldCol goldCol { get; set; }
-    public bool featureAll { get; set; }
+    //public bool featureAll { get; set; }
     public List<int> allKindMults { get; set; }
 
+    public FeatureAll featureAll { get; set; }
+}
 
+[Serializable]
+public class FeatureAll
+{
+    public bool isFeatureAll { get; set; }
+    public int featureSymbol { get; set; }
+    public int featureWinAmount { get; set; }
+    public int featureMultiplier { get; set; }
 }
 
 [Serializable]

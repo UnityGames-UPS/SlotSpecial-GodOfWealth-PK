@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using System.Linq;
 using TMPro;
 using System;
+using System.Xml.Linq;
 
 public class SlotBehaviour : MonoBehaviour
 {
@@ -638,9 +639,10 @@ public class SlotBehaviour : MonoBehaviour
                 StartCoroutine(CheckForGoldWildColumn());
                 yield return new WaitUntil(() => GoldWildCompleted);
             }
+
         }
 
-        if (SocketManager.resultData.features.featureAll)
+        if (SocketManager.resultData.features.featureAll.isFeatureAll)
         {
             IsAllofKindAnimCompleted = false;
             StartCoroutine(CheckForAllOfKind());

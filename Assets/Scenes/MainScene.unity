@@ -13868,9 +13868,8 @@ MonoBehaviour:
   slotManager: {fileID: 2046803210}
   uiManager: {fileID: 377874625}
   bonusdata: []
-  _jsManager: {fileID: 500036493}
   JSManager: {fileID: 1029290966}
-  testToken: ea2443426f694b018ba2c8c368934be3
+  testToken: 41440db8831243098934a099f92ba85a
   RaycastBlocker: {fileID: 163551759}
 --- !u!114 &500036493
 MonoBehaviour:
