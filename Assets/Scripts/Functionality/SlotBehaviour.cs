@@ -1110,7 +1110,7 @@ public class SlotBehaviour : MonoBehaviour
         if (TBetMinus_Button) TBetMinus_Button.interactable = toggle;
         if (TBetPlus_Button) TBetPlus_Button.interactable = toggle;
 
-        if (Turbo_Button) Turbo_Button.interactable = toggle;
+       // if (Turbo_Button) Turbo_Button.interactable = toggle;
     }
 
     //start the icons animation
