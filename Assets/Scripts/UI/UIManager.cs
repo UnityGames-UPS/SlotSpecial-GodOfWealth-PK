@@ -133,6 +133,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Sprite Enable_Sound_sprite;
     [SerializeField] private Sprite Disable_Sound_sprite;
 
+    [Header("Music")]
+     [SerializeField] private Sprite Enable_Music_sprite;
+    [SerializeField] private Sprite Disable_Music_sprite;
+
 
 
 
@@ -241,6 +245,7 @@ public class UIManager : MonoBehaviour
         BigWin_Gameobject.SetActive(false);
         HugeWin_Gameobject.SetActive(false);
         MegaWin_GameObject.SetActive(false);
+        audioController.PlayWLAudio("megaWin");
 
         switch (value)
         {
@@ -498,12 +503,12 @@ public class UIManager : MonoBehaviour
         isMusic = !isMusic;
         if (isMusic)
         {
-            musicImage.sprite = Enable_Sound_sprite;
+            musicImage.sprite = Enable_Music_sprite;
             audioController.ToggleMute(false, "bg");
         }
         else
         {
-            musicImage.sprite = Disable_Sound_sprite;
+            musicImage.sprite = Disable_Music_sprite;
             audioController.ToggleMute(true, "bg");
         }
     }

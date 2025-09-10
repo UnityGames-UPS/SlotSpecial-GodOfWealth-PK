@@ -593,9 +593,9 @@ public class SlotBehaviour : MonoBehaviour
         }
 
 
-        if (!(IsTurboOn || IsFreeSpin || IsAutoSpin))
+        if (!(IsTurboOn || IsFreeSpin ))
         {
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 8; i++)
             {
                 yield return new WaitForSeconds(0.1f);
                 if (StopSpinToggle)
@@ -616,7 +616,7 @@ public class SlotBehaviour : MonoBehaviour
         yield return alltweens[^1].WaitForCompletion();
         KillAllTweens();
 
-        if (SocketManager.playerdata.currentWining > 0)
+        if (SocketManager.resultData.payload.winAmount > 0)
         {
             SpinDelay = 1.2f;
         }
@@ -745,17 +745,17 @@ public class SlotBehaviour : MonoBehaviour
 
     internal void CheckWinPopups()
     {
-        if (SocketManager.playerdata.currentWining >= currentTotalBet * 10 && SocketManager.playerdata.currentWining < currentTotalBet * 15)
+        if (SocketManager.resultData.payload.winAmount >= currentTotalBet * 5 && SocketManager.resultData.payload.winAmount < currentTotalBet * 10)
         {
-            uiManager.PopulateWin(1, SocketManager.playerdata.currentWining);
+            uiManager.PopulateWin(1, SocketManager.resultData.payload.winAmount);
         }
-        else if (SocketManager.playerdata.currentWining >= currentTotalBet * 15 && SocketManager.playerdata.currentWining < currentTotalBet * 20)
+        else if (SocketManager.resultData.payload.winAmount >= currentTotalBet * 10 && SocketManager.resultData.payload.winAmount < currentTotalBet * 15)
         {
-            uiManager.PopulateWin(2, SocketManager.playerdata.currentWining);
+            uiManager.PopulateWin(2, SocketManager.resultData.payload.winAmount);
         }
-        else if (SocketManager.playerdata.currentWining >= currentTotalBet * 20)
+        else if (SocketManager.resultData.payload.winAmount >= currentTotalBet * 15)
         {
-            uiManager.PopulateWin(3, SocketManager.playerdata.currentWining);
+            uiManager.PopulateWin(3, SocketManager.resultData.payload.winAmount);
         }
         else
         {

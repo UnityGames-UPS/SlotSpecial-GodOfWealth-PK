@@ -733,7 +733,7 @@ public class Player
 {
     public double balance { get; set; }
     public double haveWon { get; set; }
-    public double currentWining { get; set; }
+   // public double currentWining { get; set; }
 }
 [Serializable]
 public class Payload
