@@ -7,10 +7,12 @@ mergeInto(LibraryManager.library, {
         } 
     },
 
-    SendPostMessage: function(messagePtr) {
+    SendPostMessage: function(messagePtr) 
+    {
       var message = UTF8ToString(messagePtr);
       console.log('SendReactPostMessage, message sent: ' + message);
-      if(window.ReactNativeWebView){
+      if(window.ReactNativeWebView)
+      {
         if(message == "authToken"){
           var injectedObjectJson = window.ReactNativeWebView.injectedObjectJson();
           var injectedObj = JSON.parse(injectedObjectJson);
@@ -29,16 +31,21 @@ mergeInto(LibraryManager.library, {
         }
         window.ReactNativeWebView.postMessage(message);
       }
-      else if(window.parent){
-        console.log('Inside window.parent');
-        // console.log('After Post message')
-        if(message == "authToken"){
-          console.log('If message is authToken');
+      else if (typeof window !== "undefined" && window.parent) {
+        if (typeof window.parent.postMessage === "function"){
+          console.log("Calling window.parent.postMessage");
+          window.parent.postMessage({ 
+            type: message,
+            data: { }
+          }, "*");
+        }
+      }
+      else if(window.parent)
+      {
+        if(message == "authToken")
+        {
           window.addEventListener('message', function(event){
-            console.log('message event triggered');
-            console.log(event);
             if(event.data.type === 'authToken'){
-              console.log('Inside events if authToken');
               var combinedData = JSON.stringify({
                   cookie: event.data.cookie,
                   socketURL: event.data.socketURL,
@@ -46,7 +53,6 @@ mergeInto(LibraryManager.library, {
               }); 
 
               if (typeof SendMessage === 'function') {
-                console.log('Sending unity a message');
                 SendMessage('SocketManager', 'ReceiveAuthToken', combinedData);
               }
               else{
